@@ -1,80 +1,98 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>discord.gg/.</title>
+    <title>Dashboard</title>
     <style>
         body {
             margin: 0;
             padding: 0;
-            background: url('https://i.pinimg.com/originals/51/ae/a3/51aea3393b8234a1e69d8713a0a58bc3.gif') no-repeat center center fixed;
-            background-size: cover;
+            background: #0a0a0a; /* يمكنك استبداله برابط خلفية متناسق */
             font-family: 'Courier New', Courier, monospace;
             color: #ff0000;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             flex-direction: column;
             text-align: center;
+            box-sizing: border-box;
         }
         .image-container img {
-            width: 750px;
+            width: 100%;
+            max-width: 600px;
             height: auto;
             border: 2px solid #ff0000;
             border-radius: 15px;
-            box-shadow: 0 0 15px rgba(0, 0, 255, 0.7);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
         }
         .info {
             margin-top: 20px;
-            font-size: 1.5em;
+            font-size: 1.2em;
             color: #ff0000;
-            text-shadow: 0px 0px 8px #ff0000, 0px 0px 15px #ff0000, 0px 0px 25px #ff0000;
-            letter-spacing: 4.5px;
-            white-space: pre-wrap;
+            text-shadow: 0px 0px 8px #ff0000;
+            letter-spacing: 2px;
+            text-align: left;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #ff0000;
         }
         .text {
             margin-top: 20px;
-            font-size: 3em;
+            font-size: 2em;
             color: #fdfcfc;
-            text-shadow: 0px 0px 8px #ffffff, 0px 0px 15px #ffffff, 0px 0px 25px #ffffff;
-            letter-spacing: 4.5px;
+            text-shadow: 0px 0px 8px #ffffff;
+            letter-spacing: 2px;
+            padding: 0 10px;
         }
     </style>
 </head>
 <body>
 
     <div class="image-container">
-        <img src="https://gifdb.com/images/high/puppet-with-fire-exdjlk4bbjsk381m.gif" alt="Discord Image">
+        <img src="https://gifdb.com/images/high/puppet-with-fire-exdjlk4bbjsk381m.gif" alt="Image">
     </div>
 
     <audio autoplay loop>
         <source src="91.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
     </audio>
 
-    <div class="text">اما توردها مـواريـد الابطال ولا استـرح وخل المـراجل لاهلها hack by 7sn</div>
+    <div class="text">الصفحة الشخصية والبيانات الحالية</div>
 
     <div class="info" id="ip-info">
-        <span><strong>IP:</strong> <span id="ip"></span></span><br>
-        <span><strong>City:</strong> <span id="city"></span></span><br>
-        <span><strong>Region:</strong> <span id="region"></span></span><br>
-        <span><strong>Country:</strong> <span id="country"></span></span><br>
-        <span><strong>Location:</strong> <span id="loc"></span></span><br>
-        <span><strong>Organization:</strong> <span id="org"></span></span><br>
-        <span><strong>Timezone:</strong> <span id="timezone"></span></span>
+        <div><strong>IP:</strong> <span id="ip">جاري التحميل...</span></div>
+        <div><strong>City:</strong> <span id="city">جاري التحميل...</span></div>
+        <div><strong>Region:</strong> <span id="region">جاري التحميل...</span></div>
+        <div><strong>Country:</strong> <span id="country">جاري التحميل...</span></div>
+        <div><strong>Location:</strong> <span id="loc">جاري التحميل...</span></div>
+        <div><strong>Organization:</strong> <span id="org">جاري التحميل...</span></div>
+        <div><strong>Timezone:</strong> <span id="timezone">جاري التحميل...</span></div>
     </div>
 
-    <div class="text">لعيون الحبايب لوكا وجيري ولشيعة مرا وحدة بعيوني عيال سواليف [RKF/O1KWT/GHA]</div>
-
     <script>
+        // جلب البيانات من واجهة برمجة التطبيقات (API) وتوزيعها بشكل صحيح
         fetch('https://ipinfo.io/json')
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
         .then(data => {
-            delete data.readme;
-            const infoDiv = document.getElementById('ip-info');
-            infoDiv.textContent = JSON.stringify(data, null, 2);
+            // ربط كل عنصر بقيمته الصحيحة القادمة من الـ API
+            document.getElementById('ip').textContent = data.ip || 'N/A';
+            document.getElementById('city').textContent = data.city || 'N/A';
+            document.getElementById('region').textContent = data.region || 'N/A';
+            document.getElementById('country').textContent = data.country || 'N/A';
+            document.getElementById('loc').textContent = data.loc || 'N/A';
+            document.getElementById('org').textContent = data.org || 'N/A';
+            document.getElementById('timezone').textContent = data.timezone || 'N/A';
+        })
+        .catch(error => {
+            console.error('حدث خطأ أثناء جلب البيانات:', error);
+            document.getElementById('ip-info').textContent = 'فشل في تحميل البيانات الحالية.';
         });
     </script>
 
