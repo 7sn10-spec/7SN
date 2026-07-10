@@ -27,6 +27,16 @@
             border-radius: 15px;
             box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
         }
+        /* تصميم العداد التنازلي الجديد */
+        .timer-container {
+            margin-top: 20px;
+            font-size: 3.5em;
+            font-weight: bold;
+            color: #ff0000;
+            text-shadow: 0px 0px 15px #ff0000;
+            font-family: 'Courier New', Courier, monospace;
+            letter-spacing: 3px;
+        }
         .info {
             margin-top: 20px;
             font-size: 1.2em;
@@ -40,7 +50,7 @@
             border: 1px solid #ff0000;
         }
         .text {
-            margin-top: 20px;
+            margin-top: 10px;
             font-size: 2em;
             color: #fdfcfc;
             text-shadow: 0px 0px 8px #ffffff;
@@ -54,6 +64,8 @@
     <div class="image-container">
         <img src="https://gifdb.com/images/high/puppet-with-fire-exdjlk4bbjsk381m.gif" alt="Image">
     </div>
+
+    <div class="timer-container" id="countdown">10:00</div>
 
     <audio autoplay loop>
         <source src="91.mp3" type="audio/mpeg">
@@ -72,6 +84,27 @@
     </div>
 
     <script>
+        // كود العداد التنازلي لـ 10 دقائق
+        let duration = 10 * 60; // 10 دقائق بالثواني
+        const display = document.getElementById('countdown');
+
+        const timer = setInterval(() => {
+            let minutes = Math.floor(duration / 60);
+            let seconds = duration % 60;
+
+            // إضافة صفر على اليسار إذا كانت الأرقام أقل من 10
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+
+            display.textContent = minutes + ":" + seconds;
+
+            if (--duration < 0) {
+                clearInterval(timer);
+                display.textContent = "00:00"; // ما يحدث عند انتهاء الوقت
+                // يمكنك إضافة أي أمر هنا عند انتهاء الـ 10 دقائق
+            }
+        }, 1000);
+
         // جلب البيانات من واجهة برمجة التطبيقات (API) وتوزيعها بشكل صحيح
         fetch('https://ipinfo.io/json')
         .then(response => {
@@ -81,7 +114,6 @@
             return response.json();
         })
         .then(data => {
-            // ربط كل عنصر بقيمته الصحيحة القادمة من الـ API
             document.getElementById('ip').textContent = data.ip || 'N/A';
             document.getElementById('city').textContent = data.city || 'N/A';
             document.getElementById('region').textContent = data.region || 'N/A';
